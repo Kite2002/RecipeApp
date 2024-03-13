@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {SafeAreaView, StatusBar, Text} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AppNavigation from './src/navigation/AppNavigation';
@@ -10,6 +10,7 @@ function App(): React.JSX.Element {
     <SafeAreaProvider>
       <NavigationContainer>
         <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+          <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} />
           <AppNavigation />
         </SafeAreaView>
       </NavigationContainer>
