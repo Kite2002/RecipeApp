@@ -1,12 +1,17 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import Homescreen from '../screens/Homescreen';
+import DetailsScreen from '../screens/DetailsScreen';
+
+const Stack = createStackNavigator();
 
 const AppNavigation = () => {
   return (
-    <View>
-      <Text>AppNavigation</Text>
-    </View>
-  )
-}
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Homescreen} />
+      <Stack.Screen name="Notifications" component={DetailsScreen} />
+    </Stack.Navigator>
+  );
+};
 
-export default AppNavigation
+export default AppNavigation;

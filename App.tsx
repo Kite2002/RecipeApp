@@ -3,13 +3,14 @@ import React from 'react';
 import {SafeAreaView, Text} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import AppNavigation from './src/navigation/AppNavigation';
 
 function App(): React.JSX.Element {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
         <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-          <Text style={{color: 'black'}}>Yo</Text>
+          <AppNavigation />
         </SafeAreaView>
       </NavigationContainer>
     </SafeAreaProvider>
