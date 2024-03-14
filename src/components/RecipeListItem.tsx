@@ -6,6 +6,9 @@ import {Icon} from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
 import {Meal, MealContext} from '../context/MealContext';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../navigation/AppNavigation';
 
 type RecipeListItemType = {
   item: Meal;
@@ -41,6 +44,9 @@ const RecipeListItem = ({item, index}: RecipeListItemType) => {
     }
   };
 
+  type DetailsScreenProps = StackNavigationProp<RootStackParamList, 'Details'>;
+  const navigation = useNavigation<DetailsScreenProps>();
+
   return (
     <View
       style={{
@@ -52,6 +58,9 @@ const RecipeListItem = ({item, index}: RecipeListItemType) => {
         backgroundColor: APP_COLOR?.White,
       }}>
       <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Details' , {id : item?.idMeal});
+        }}
         style={{overflow: 'hidden', borderRadius: 12}}
         key={index}>
         <Image

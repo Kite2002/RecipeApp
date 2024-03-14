@@ -3,15 +3,23 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Homescreen from '../screens/Homescreen';
 import DetailsScreen from '../screens/DetailsScreen';
 
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  Home: undefined;
+  Details: {
+    id: string;
+  };
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{
-        headerShown : false
-    }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Stack.Screen name="Home" component={Homescreen} />
-      <Stack.Screen name="Notifications" component={DetailsScreen} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
     </Stack.Navigator>
   );
 };
