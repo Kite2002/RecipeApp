@@ -1,12 +1,16 @@
 import {Text, ScrollView, TouchableOpacity} from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { Skeleton } from '@rneui/themed';
-import { APP_COLOR } from '../utils/Theme';
-import { hp, wp } from '../utils/Helper';
-import { Image } from 'react-native';
+import React, {SetStateAction, useEffect, useState} from 'react';
+import {Skeleton} from '@rneui/themed';
+import {APP_COLOR} from '../utils/Theme';
+import {hp, wp} from '../utils/Helper';
+import {Image} from 'react-native';
 import axios from 'axios';
 
-const CatagoryList = () => {
+type CatagoryListType = {
+  setSelectedCat: SetStateAction<any>;
+};
+
+const CatagoryList = ({setSelectedCat}: CatagoryListType) => {
   const [cat, setCat] = useState([]);
   const [loadingCat, setLoadingCat] = useState(false);
   const getCatagories = async () => {
@@ -44,6 +48,7 @@ const CatagoryList = () => {
           {cat.map((item: any, index: number) => {
             return (
               <TouchableOpacity
+                onPress={() => setSelectedCat(item?.strCategory)}
                 key={index}
                 style={{
                   backgroundColor: APP_COLOR['Gray-100'],
