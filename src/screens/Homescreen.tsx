@@ -66,7 +66,7 @@ const Homescreen = () => {
           columnGap: wp(4),
         }}
         contentContainerStyle={{
-          paddingBottom: hp(2),
+          paddingVertical: hp(1),
           display: 'flex',
           justifyContent: 'space-between',
           rowGap: hp(2),
@@ -74,35 +74,58 @@ const Homescreen = () => {
         data={recipes}
         renderItem={({item, index}: any) => {
           return (
-            <TouchableOpacity
+            <View
               style={{
+                position: 'relative',
                 flex: 1,
                 borderRadius: 12,
-                overflow: 'hidden',
                 elevation: 1,
                 backgroundColor: APP_COLOR?.White,
-              }}
-              key={index}>
-              <Image
-                resizeMode="contain"
-                resizeMethod="resize"
-                loadingIndicatorSource={require('../../assets/placeholder.jpg')}
+              }}>
+              <TouchableOpacity style={{overflow: 'hidden' ,  borderRadius: 12}} key={index}>
+                <Image
+                  resizeMode="contain"
+                  resizeMethod="resize"
+                  loadingIndicatorSource={require('../../assets/placeholder.jpg')}
+                  style={{
+                    width: '100%',
+                    height: hp('20%'),
+                  }}
+                  source={{
+                    uri: item?.strMealThumb,
+                  }}
+                />
+                <View style={{padding: wp(4)}}>
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      color: APP_COLOR?.['Slate-900'],
+                      maxWidth: '100%',
+                      fontWeight: '600',
+                      fontSize: wp(3),
+                    }}>
+                    {item?.strMeal}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={{
-                  width: '100%',
-                  height: hp('20%'),
-                }}
-                source={{
-                  uri: item?.strMealThumb,
-                }}
-              />
-              <View style ={{padding : wp(4)}}>
-                <Text
-                  numberOfLines={1}
-                  style={{color: APP_COLOR?.['Slate-900'], maxWidth: '100%' , fontWeight : '600' , fontSize : wp(3)}}>
-                  {item?.strMeal}
-                </Text>
-              </View>
-            </TouchableOpacity>
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  zIndex: 10,
+                  backgroundColor : APP_COLOR?.White,
+                  borderRadius : 200,
+                  padding : wp(.8),
+                  elevation :2
+                }}>
+                <Icon
+                  size={wp(6)}
+                  color={APP_COLOR?.['Pizazz-500']}
+                  name="bookmark-outline"
+                />
+              </TouchableOpacity>
+            </View>
           );
         }}
       />
