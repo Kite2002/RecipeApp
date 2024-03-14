@@ -4,6 +4,7 @@ import {SafeAreaView, StatusBar, Text} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AppNavigation from './src/navigation/AppNavigation';
+import {MealProvider} from './src/context/MealContext';
 
 function App(): React.JSX.Element {
   return (
@@ -11,7 +12,9 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
           <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} />
-          <AppNavigation />
+          <MealProvider>
+            <AppNavigation />
+          </MealProvider>
         </SafeAreaView>
       </NavigationContainer>
     </SafeAreaProvider>

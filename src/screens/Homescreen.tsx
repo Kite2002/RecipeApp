@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {APP_COLOR} from '../utils/Theme';
 import {hp, wp} from '../utils/Helper';
 import {Icon} from '@rneui/base';
@@ -17,31 +17,22 @@ import CatagoryList from '../components/CatagoryList';
 import {FlatList} from 'react-native';
 import RecipeListItem from '../components/RecipeListItem';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Meal, MealContext} from '../context/MealContext';
 
 const Homescreen = () => {
   const [selectedCat, setSelectedCat] = useState('Beef');
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const {meals} = useContext(MealContext)!;
+
   const fetchByCatagory = async (cat: string) => {
     try {
-      if (cat == 'Saved') {
-        const recipes = await AsyncStorage.getItem('savedMeals');
-        if (recipes) {
-          console.log(recipes)
-          const parsedRecipes = JSON.parse(recipes);
-          const mealsArray = Object.values(parsedRecipes);
-          setRecipes(mealsArray);
-        }else{
-          setRecipes([])
-        }
-      } else {
-        setLoading(true);
-        const res = await axios.get(
-          `https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`,
-        );
-        setRecipes(res?.data?.meals);
-      }
+      setLoading(true);
+      const res = await axios.get(
+        `https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`,
+      );
+      setRecipes(res?.data?.meals);
     } catch (error) {
       console.log(error);
     } finally {
@@ -102,22 +93,43 @@ const Homescreen = () => {
           ))}
         </View>
       ) : (
-        <FlatList
-          numColumns={2}
-          columnWrapperStyle={{
-            columnGap: wp(4),
-          }}
-          contentContainerStyle={{
-            paddingVertical: hp(1),
-            display: 'flex',
-            justifyContent: 'space-between',
-            rowGap: hp(2),
-          }}
-          data={recipes}
-          renderItem={({item, index}: any) => {
-            return <RecipeListItem item={item} index={index} />;
-          }}
-        />
+        <>
+          {selectedCat == 'Saved' ? (
+            <FlatList
+              numColumns={2}
+              columnWrapperStyle={{
+                columnGap: wp(4),
+              }}
+              contentContainerStyle={{
+                paddingVertical: hp(1),
+                display: 'flex',
+                justifyContent: 'space-between',
+                rowGap: hp(2),
+              }}
+              data={meals}
+              renderItem={({item, index}: any) => {
+                return <RecipeListItem item={item} index={index} />;
+              }}
+            />
+          ) : (
+            <FlatList
+              numColumns={2}
+              columnWrapperStyle={{
+                columnGap: wp(4),
+              }}
+              contentContainerStyle={{
+                paddingVertical: hp(1),
+                display: 'flex',
+                justifyContent: 'space-between',
+                rowGap: hp(2),
+              }}
+              data={recipes}
+              renderItem={({item, index}: any) => {
+                return <RecipeListItem item={item} index={index} />;
+              }}
+            />
+          )}
+        </>
       )}
     </View>
   );
