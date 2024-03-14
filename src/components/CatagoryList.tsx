@@ -31,7 +31,7 @@ const CatagoryList = () => {
         Array.from({length: 5}).map((_, index) => (
           <Skeleton
             key={index}
-            height={hp(8)}
+            height={hp(9.2)}
             width={wp(20)}
             animation="pulse"
             skeletonStyle={{

@@ -19,15 +19,19 @@ import {FlatList} from 'react-native';
 const Homescreen = () => {
   const [selectedCat, setSelectedCat] = useState('Beef');
   const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchByCatagory = async (cat: string) => {
     try {
+      setLoading(true);
       const res = await axios.get(
         `https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`,
       );
       setRecipes(res?.data?.meals);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,75 +64,99 @@ const Homescreen = () => {
         </Text>
         <CatagoryList />
       </View>
-      <FlatList
-        numColumns={2}
-        columnWrapperStyle={{
-          columnGap: wp(4),
-        }}
-        contentContainerStyle={{
-          paddingVertical: hp(1),
-          display: 'flex',
-          justifyContent: 'space-between',
-          rowGap: hp(2),
-        }}
-        data={recipes}
-        renderItem={({item, index}: any) => {
-          return (
-            <View
-              style={{
-                position: 'relative',
-                flex: 1,
-                borderRadius: 12,
-                elevation: 1,
-                backgroundColor: APP_COLOR?.White,
-              }}>
-              <TouchableOpacity style={{overflow: 'hidden' ,  borderRadius: 12}} key={index}>
-                <Image
-                  resizeMode="contain"
-                  resizeMethod="resize"
-                  loadingIndicatorSource={require('../../assets/placeholder.jpg')}
-                  style={{
-                    width: '100%',
-                    height: hp('20%'),
-                  }}
-                  source={{
-                    uri: item?.strMealThumb,
-                  }}
-                />
-                <View style={{padding: wp(4)}}>
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      color: APP_COLOR?.['Slate-900'],
-                      maxWidth: '100%',
-                      fontWeight: '600',
-                      fontSize: wp(3),
-                    }}>
-                    {item?.strMeal}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
+      {loading ? (
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            columnGap: wp(4),
+            rowGap: hp(2),
+          }}>
+          {Array.from({length: 8}).map((_, index) => (
+            <Skeleton
+              key={index}
+              height={hp(25)}
+              width={wp(43)}
+              animation="pulse"
+              skeletonStyle={{
+                backgroundColor: APP_COLOR['Gray-100'],
+              }}
+            />
+          ))}
+        </View>
+      ) : (
+        <FlatList
+          numColumns={2}
+          columnWrapperStyle={{
+            columnGap: wp(4),
+          }}
+          contentContainerStyle={{
+            paddingVertical: hp(1),
+            display: 'flex',
+            justifyContent: 'space-between',
+            rowGap: hp(2),
+          }}
+          data={recipes}
+          renderItem={({item, index}: any) => {
+            return (
+              <View
                 style={{
-                  position: 'absolute',
-                  top: 8,
-                  right: 8,
-                  zIndex: 10,
-                  backgroundColor : APP_COLOR?.White,
-                  borderRadius : 200,
-                  padding : wp(.8),
-                  elevation :2
+                  position: 'relative',
+                  flex: 1,
+                  borderRadius: 12,
+                  elevation: 1,
+                  backgroundColor: APP_COLOR?.White,
                 }}>
-                <Icon
-                  size={wp(6)}
-                  color={APP_COLOR?.['Pizazz-500']}
-                  name="bookmark-outline"
-                />
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-      />
+                <TouchableOpacity
+                  style={{overflow: 'hidden', borderRadius: 12}}
+                  key={index}>
+                  <Image
+                    resizeMode="contain"
+                    resizeMethod="resize"
+                    loadingIndicatorSource={require('../../assets/placeholder.jpg')}
+                    style={{
+                      width: '100%',
+                      height: hp('20%'),
+                    }}
+                    source={{
+                      uri: item?.strMealThumb,
+                    }}
+                  />
+                  <View style={{padding: wp(4)}}>
+                    <Text
+                      numberOfLines={1}
+                      style={{
+                        color: APP_COLOR?.['Slate-900'],
+                        maxWidth: '100%',
+                        fontWeight: '600',
+                        fontSize: wp(3),
+                      }}>
+                      {item?.strMeal}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                    zIndex: 10,
+                    backgroundColor: APP_COLOR?.White,
+                    borderRadius: 200,
+                    padding: wp(0.8),
+                    elevation: 2,
+                  }}>
+                  <Icon
+                    size={wp(6)}
+                    color={APP_COLOR?.['Pizazz-500']}
+                    name="bookmark-outline"
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        />
+      )}
     </View>
   );
 };
