@@ -8,9 +8,10 @@ import axios from 'axios';
 
 type CatagoryListType = {
   setSelectedCat: SetStateAction<any>;
+  selectedCat: string;
 };
 
-const CatagoryList = ({setSelectedCat}: CatagoryListType) => {
+const CatagoryList = ({setSelectedCat, selectedCat}: CatagoryListType) => {
   const [cat, setCat] = useState([]);
   const [loadingCat, setLoadingCat] = useState(false);
   const getCatagories = async () => {
@@ -46,12 +47,13 @@ const CatagoryList = ({setSelectedCat}: CatagoryListType) => {
       ) : (
         <>
           {cat.map((item: any, index: number) => {
+            const isSelectedCat = item?.strCategory == selectedCat
             return (
               <TouchableOpacity
                 onPress={() => setSelectedCat(item?.strCategory)}
                 key={index}
                 style={{
-                  backgroundColor: APP_COLOR['Gray-100'],
+                  backgroundColor: isSelectedCat ? APP_COLOR['Pizazz-500'] : APP_COLOR['Gray-100'],
                   paddingHorizontal: wp(2),
                   paddingVertical: hp(0.8),
                   width: wp(20),
@@ -76,7 +78,7 @@ const CatagoryList = ({setSelectedCat}: CatagoryListType) => {
                 <Text
                   numberOfLines={1}
                   style={{
-                    color: APP_COLOR['Gray-400'],
+                    color: isSelectedCat ? APP_COLOR.White : APP_COLOR['Gray-400'],
                     fontSize: wp(3),
                     fontWeight: '600',
                   }}>

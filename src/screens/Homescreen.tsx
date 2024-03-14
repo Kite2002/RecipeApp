@@ -62,7 +62,10 @@ const Homescreen = () => {
           }}>
           Catagories
         </Text>
-        <CatagoryList setSelectedCat={setSelectedCat} />
+        <CatagoryList
+          selectedCat={selectedCat}
+          setSelectedCat={setSelectedCat}
+        />
       </View>
       {loading ? (
         <View
@@ -103,7 +106,7 @@ const Homescreen = () => {
                 style={{
                   position: 'relative',
                   flex: 1,
-                  maxWidth : '48%',
+                  maxWidth: '48%',
                   borderRadius: 12,
                   elevation: 1,
                   backgroundColor: APP_COLOR?.White,
