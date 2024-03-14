@@ -59,7 +59,11 @@ const RecipeListItem = ({item, index}: RecipeListItemType) => {
       }}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('Details' , {id : item?.idMeal});
+          navigation.navigate('Details', {
+            id: item?.idMeal,
+            setIsSaved: setIsSaved,
+            isSaved: isSaved,
+          });
         }}
         style={{overflow: 'hidden', borderRadius: 12}}
         key={index}>

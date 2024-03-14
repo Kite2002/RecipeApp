@@ -7,6 +7,8 @@ export type RootStackParamList = {
   Home: undefined;
   Details: {
     id: string;
+    setIsSaved : any,
+    isSaved : boolean
   };
 };
 
