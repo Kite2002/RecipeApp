@@ -13,30 +13,32 @@ import {hp, wp} from '../utils/Helper';
 import {Icon} from '@rneui/base';
 import {Skeleton} from '@rneui/themed';
 import axios from 'axios';
+import CatagoryList from '../components/CatagoryList';
+import {FlatList} from 'react-native';
 
 const Homescreen = () => {
-  const [cat, setCat] = useState([]);
-  const [loadingCat, setLoadingCat] = useState(false);
-  const getCatagories = async () => {
+  const [selectedCat, setSelectedCat] = useState('Beef');
+  const [recipes, setRecipes] = useState([]);
+
+  const fetchByCatagory = async (cat: string) => {
     try {
-      setLoadingCat(true);
-      const {data} = await axios?.get(
-        'https://www.themealdb.com/api/json/v1/1/categories.php',
+      const res = await axios.get(
+        `https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`,
       );
-      setCat(data.categories);
+      setRecipes(res?.data?.meals);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoadingCat(false);
     }
   };
+
   useEffect(() => {
-    getCatagories();
-  }, []);
+    fetchByCatagory(selectedCat);
+  }, [selectedCat]);
+
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={{
+      <View
+        style={{
           flexDirection: 'column',
           rowGap: hp(2),
         }}>
@@ -56,64 +58,54 @@ const Homescreen = () => {
           }}>
           Catagories
         </Text>
-        <ScrollView contentContainerStyle={{columnGap: wp(1.5)}} horizontal>
-          {loadingCat ? (
-            Array.from({length: 5}).map((_, index) => (
-              <Skeleton
-                key={index}
-                height={hp(8)}
-                width={wp(20)}
-                animation="pulse"
-                skeletonStyle={{
-                  backgroundColor: APP_COLOR['Gray-100'],
+        <CatagoryList />
+      </View>
+      <FlatList
+        numColumns={2}
+        columnWrapperStyle={{
+          columnGap: wp(4),
+        }}
+        contentContainerStyle={{
+          paddingBottom: hp(2),
+          display: 'flex',
+          justifyContent: 'space-between',
+          rowGap: hp(2),
+        }}
+        data={recipes}
+        renderItem={({item, index}: any) => {
+          return (
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                borderRadius: 12,
+                overflow: 'hidden',
+                elevation: 1,
+                backgroundColor: APP_COLOR?.White,
+              }}
+              key={index}>
+              <Image
+                resizeMode="contain"
+                resizeMethod="resize"
+                loadingIndicatorSource={require('../../assets/placeholder.jpg')}
+                style={{
+                  width: '100%',
+                  height: hp('20%'),
+                }}
+                source={{
+                  uri: item?.strMealThumb,
                 }}
               />
-            ))
-          ) : (
-            <>
-              {cat.map((item: any, index) => {
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    style={{
-                      backgroundColor: APP_COLOR['Gray-100'],
-                      paddingHorizontal: wp(2),
-                      paddingVertical: hp(0.8),
-                      width: wp(20),
-                      borderRadius: 8,
-                      rowGap: hp(0.8),
-                      justifyContent: 'center',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}>
-                    <Image
-                      resizeMode="contain"
-                      resizeMethod="resize"
-                      loadingIndicatorSource={require('../../assets/placeholder.jpg')}
-                      style={{
-                        width: '100%',
-                        height: hp(4.5),
-                      }}
-                      source={{
-                        uri: item?.strCategoryThumb,
-                      }}
-                    />
-                    <Text
-                      numberOfLines={1}
-                      style={{
-                        color: APP_COLOR['Gray-400'],
-                        fontSize: wp(3),
-                        fontWeight: '600',
-                      }}>
-                      {item?.strCategory}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </>
-          )}
-        </ScrollView>
-      </ScrollView>
+              <View style ={{padding : wp(4)}}>
+                <Text
+                  numberOfLines={1}
+                  style={{color: APP_COLOR?.['Slate-900'], maxWidth: '100%' , fontWeight : '600' , fontSize : wp(3)}}>
+                  {item?.strMeal}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+      />
     </View>
   );
 };
@@ -121,7 +113,7 @@ const Homescreen = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: wp(5),
-    paddingVertical: hp(2),
+    paddingTop: hp(2),
     flex: 1,
     backgroundColor: '#fff',
     rowGap: hp(4),
