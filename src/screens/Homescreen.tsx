@@ -16,6 +16,7 @@ import axios from 'axios';
 import CatagoryList from '../components/CatagoryList';
 import {FlatList} from 'react-native';
 import RecipeListItem from '../components/RecipeListItem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Homescreen = () => {
   const [selectedCat, setSelectedCat] = useState('Beef');
@@ -24,11 +25,23 @@ const Homescreen = () => {
 
   const fetchByCatagory = async (cat: string) => {
     try {
-      setLoading(true);
-      const res = await axios.get(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`,
-      );
-      setRecipes(res?.data?.meals);
+      if (cat == 'Saved') {
+        const recipes = await AsyncStorage.getItem('savedMeals');
+        if (recipes) {
+          console.log(recipes)
+          const parsedRecipes = JSON.parse(recipes);
+          const mealsArray = Object.values(parsedRecipes);
+          setRecipes(mealsArray);
+        }else{
+          setRecipes([])
+        }
+      } else {
+        setLoading(true);
+        const res = await axios.get(
+          `https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`,
+        );
+        setRecipes(res?.data?.meals);
+      }
     } catch (error) {
       console.log(error);
     } finally {
