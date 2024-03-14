@@ -72,45 +72,46 @@ const Homescreen = () => {
           setSelectedCat={setSelectedCat}
         />
       </View>
-      {loading ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            flexWrap: 'wrap',
+
+      {selectedCat == 'Saved' ? (
+        <FlatList
+          numColumns={2}
+          columnWrapperStyle={{
             columnGap: wp(4),
+          }}
+          contentContainerStyle={{
+            paddingVertical: hp(1),
+            display: 'flex',
+            justifyContent: 'space-between',
             rowGap: hp(2),
-          }}>
-          {Array.from({length: 8}).map((_, index) => (
-            <Skeleton
-              key={index}
-              height={hp(25)}
-              width={wp(43)}
-              animation="pulse"
-              skeletonStyle={{
-                backgroundColor: APP_COLOR['Gray-100'],
-              }}
-            />
-          ))}
-        </View>
+          }}
+          data={meals}
+          renderItem={({item, index}: any) => {
+            return <RecipeListItem item={item} index={index} />;
+          }}
+        />
       ) : (
         <>
-          {selectedCat == 'Saved' ? (
-            <FlatList
-              numColumns={2}
-              columnWrapperStyle={{
+          {loading ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
                 columnGap: wp(4),
-              }}
-              contentContainerStyle={{
-                paddingVertical: hp(1),
-                display: 'flex',
-                justifyContent: 'space-between',
                 rowGap: hp(2),
-              }}
-              data={meals}
-              renderItem={({item, index}: any) => {
-                return <RecipeListItem item={item} index={index} />;
-              }}
-            />
+              }}>
+              {Array.from({length: 8}).map((_, index) => (
+                <Skeleton
+                  key={index}
+                  height={hp(25)}
+                  width={wp(43)}
+                  animation="pulse"
+                  skeletonStyle={{
+                    backgroundColor: APP_COLOR['Gray-100'],
+                  }}
+                />
+              ))}
+            </View>
           ) : (
             <FlatList
               numColumns={2}
