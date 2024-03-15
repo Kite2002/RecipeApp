@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  StatusBar,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {APP_COLOR} from '../utils/Theme';
@@ -45,7 +46,16 @@ const Homescreen = () => {
   }, [selectedCat]);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingTop:
+            (StatusBar?.currentHeight ? StatusBar.currentHeight : hp(2)) +
+            hp(2),
+        },
+      ]}>
+      <StatusBar translucent backgroundColor={'transparent'} />
       <View
         style={{
           flexDirection: 'column',
