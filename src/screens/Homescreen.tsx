@@ -8,7 +8,7 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {APP_COLOR} from '../utils/Theme';
 import {hp, wp} from '../utils/Helper';
 import {Icon} from '@rneui/base';
@@ -19,6 +19,7 @@ import {FlatList} from 'react-native';
 import RecipeListItem from '../components/RecipeListItem';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Meal, MealContext} from '../context/MealContext';
+import LottieView from 'lottie-react-native';
 
 const Homescreen = () => {
   const [selectedCat, setSelectedCat] = useState('Beef');
@@ -94,6 +95,23 @@ const Homescreen = () => {
             display: 'flex',
             justifyContent: 'space-between',
             rowGap: hp(2),
+          }}
+          ListEmptyComponent={() => {
+            const ref = useRef<LottieView>(null);
+            useEffect(() => {
+              setTimeout(() => {
+                ref?.current?.play();
+              }, 300);
+            }, []);
+            return (
+              <LottieView
+                ref={ref}
+                style={{height: hp(40), width: wp(100)}}
+                autoPlay={false}
+                source={require('../../assets/empty.json')}
+                loop
+              />
+            );
           }}
           data={meals}
           renderItem={({item, index}: any) => {
