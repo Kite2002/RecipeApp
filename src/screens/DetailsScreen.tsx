@@ -10,7 +10,7 @@ import {Meal, MealContext} from '../context/MealContext';
 
 const MealDetailsScreen = ({route}: any) => {
   const {id: mealId, setIsSaved, isSaved} = route.params;
-
+  console.log(mealId)
   const [ingredients, setIngredients] = useState<any>([]);
   const [measures, setMeasures] = useState<any>([]);
   const [meal, setMeal] = useState<any>(null);
@@ -20,13 +20,13 @@ const MealDetailsScreen = ({route}: any) => {
   const handleAddMeal = (meal: Meal) => {
     addMeal(meal);
     setIsSavedMeal(true);
-    setIsSaved(true)
+    setIsSaved(true);
   };
 
   const handleRemoveMeal = (mealId: string) => {
     removeMealById(mealId);
     setIsSavedMeal(false);
-    setIsSaved(false)
+    setIsSaved(false);
   };
 
   const checkMealExists = (mealId: string) => {
@@ -42,7 +42,7 @@ const MealDetailsScreen = ({route}: any) => {
       handleRemoveMeal(meal?.idMeal);
     } else {
       handleAddMeal({
-        idMeal: meal?.mealId,
+        idMeal: mealId,
         strMeal: meal?.strMeal,
         strMealThumb: meal?.strMealThumb,
       });
@@ -94,7 +94,18 @@ const MealDetailsScreen = ({route}: any) => {
             left: wp(6),
             top: hp(5),
           }}>
-          <Icon color={APP_COLOR.White} name="arrow-back-ios" />
+          <Icon
+            style={{
+              backgroundColor: APP_COLOR?.White,
+              textAlign: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: wp(1),
+              borderRadius: 200,
+            }}
+            color={APP_COLOR['Pizazz-500']}
+            name="arrow-back"
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={toggleSaveMeal}
@@ -109,7 +120,7 @@ const MealDetailsScreen = ({route}: any) => {
             elevation: 2,
           }}>
           <Icon
-            size={wp(6)}
+            size={wp(8)}
             color={APP_COLOR?.['Pizazz-500']}
             name={savedMeal ? 'bookmark' : 'bookmark-outline'}
           />
