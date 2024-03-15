@@ -16,8 +16,11 @@ type RecipeListItemType = {
 };
 
 const RecipeListItem = ({item, index}: RecipeListItemType) => {
-  const [isSaved, setIsSaved] = useState(false);
-  const {addMeal, removeMealById, mealExists} = useContext(MealContext)!;
+  const {meals, addMeal, removeMealById, mealExists} = useContext(MealContext)!;
+  const checkMealExists = (mealId: string) => {
+    return mealExists(mealId);
+  };
+  const [isSaved, setIsSaved] = useState(checkMealExists(item?.idMeal));
 
   const handleAddMeal = (meal: Meal) => {
     addMeal(meal);
@@ -28,13 +31,9 @@ const RecipeListItem = ({item, index}: RecipeListItemType) => {
     removeMealById(mealId);
   };
 
-  const checkMealExists = (mealId: string) => {
-    return mealExists(mealId);
-  };
-
   useEffect(() => {
     setIsSaved(checkMealExists(item?.idMeal));
-  }, []);
+  }, [meals]);
 
   const toggleSaveMeal = () => {
     if (isSaved) {
@@ -61,8 +60,6 @@ const RecipeListItem = ({item, index}: RecipeListItemType) => {
         onPress={() => {
           navigation.navigate('Details', {
             id: item?.idMeal,
-            setIsSaved: setIsSaved,
-            isSaved: isSaved,
           });
         }}
         style={{overflow: 'hidden', borderRadius: 12}}

@@ -9,33 +9,31 @@ import {useNavigation} from '@react-navigation/native';
 import {Meal, MealContext} from '../context/MealContext';
 
 const MealDetailsScreen = ({route}: any) => {
-  const {id: mealId, setIsSaved, isSaved} = route.params;
-  console.log(mealId)
+  const {id: mealId} = route.params;
   const [ingredients, setIngredients] = useState<any>([]);
   const [measures, setMeasures] = useState<any>([]);
   const [meal, setMeal] = useState<any>(null);
-  const [savedMeal, setIsSavedMeal] = useState(isSaved);
-  const {addMeal, removeMealById, mealExists} = useContext(MealContext)!;
-
-  const handleAddMeal = (meal: Meal) => {
-    addMeal(meal);
-    setIsSavedMeal(true);
-    setIsSaved(true);
-  };
-
-  const handleRemoveMeal = (mealId: string) => {
-    removeMealById(mealId);
-    setIsSavedMeal(false);
-    setIsSaved(false);
-  };
+  const {meals, addMeal, removeMealById, mealExists} = useContext(MealContext)!;
 
   const checkMealExists = (mealId: string) => {
     return mealExists(mealId);
   };
 
-  // useEffect(() => {
-  //   setIsSavedMeal(checkMealExists(meal?.idMeal));
-  // }, []);
+  const [savedMeal, setIsSavedMeal] = useState(checkMealExists(mealId));
+
+  useEffect(() => {
+    setIsSavedMeal(checkMealExists(mealId));
+  }, [meals]);
+
+  const handleAddMeal = (meal: Meal) => {
+    addMeal(meal);
+    setIsSavedMeal(true);
+  };
+
+  const handleRemoveMeal = (mealId: string) => {
+    removeMealById(mealId);
+    setIsSavedMeal(false);
+  };
 
   const toggleSaveMeal = () => {
     if (savedMeal) {
