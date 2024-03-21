@@ -57,10 +57,3 @@ Technologies used in the project:
 *   React Native
 *   React native elements
 *   Async storage
-
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
