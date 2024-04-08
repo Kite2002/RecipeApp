@@ -1,3 +1,6 @@
+
+![Wok Asian Food Logo (Facebook Post)](https://github.com/Kite2002/RecipeApp/assets/83082995/ca9cb133-1d15-408d-b948-edc0fe89064e)
+
 <h2>🧐 Features</h2>
 
 Here're some of the project's best features:
