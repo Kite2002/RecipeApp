@@ -5,10 +5,10 @@
 
 Here're some of the project's best features:
 
-*   Browsing different recipes by catagories 
-*   Searching your Favorate recipe 
+*   Browsing different recipes by categories 
+*   Searching your favorite recipe 
 *   Saving recipes for quick access
-*   Full recipe and ingridents 
+*   Full recipe and ingredients 
 
 
 <h2>🛠️ Installation Steps:</h2>
